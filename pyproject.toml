@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "reddit-post-notifier"
+version = "0.1.0"
+description = ""
+authors = ["Echo Nolan <echo@echonolan.net>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+requests = "^2.32.3"
+bs4 = "^0.0.2"
+pyyaml = "^6.0.1"
+pytz = "^2024.1"
+humanize = "^4.9.0"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.4.2"
+ipython = "^8.26.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

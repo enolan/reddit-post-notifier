@@ -4,6 +4,7 @@ version = "0.1.0"
 description = ""
 authors = ["Echo Nolan <echo@echonolan.net>"]
 readme = "README.md"
+license = "BSD-3-Clause"
 
 [tool.poetry.dependencies]
 python = "^3.11"

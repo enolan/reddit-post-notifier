@@ -214,7 +214,9 @@ def main():
         notified_ids = set()
 
     while True:
-        print(f"Searching at {datetime.now().astimezone(pytz.timezone('America/New_York'))}")
+        print(
+            f"Searching at {datetime.now().astimezone(pytz.timezone('America/New_York'))}"
+        )
         try:
             for search_config in cfg:
                 print(

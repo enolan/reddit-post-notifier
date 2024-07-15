@@ -58,6 +58,9 @@ def parse_reddit_search_results(
             title_element.text.strip() if title_element else "No title found"
         )
 
+        author_element = result.find("a", class_="author")
+        post_data["author"] = author_element.text if author_element else "Unknown"
+
         # Extract the post link
         post_data["link"] = (
             title_element["href"]
@@ -135,8 +138,8 @@ def send_reddit_notifications(
             time_diff = datetime.now(pytz.utc) - post["time"]
 
             # Construct notification message
-            title = f"New post in r/{subreddit} {humanize.naturaltime(time_diff)}"
-            body = f"Title: {post['title']}\nTime: {post['time'].astimezone(pytz.timezone('America/New_York')).isoformat()}\nLink: {post['link']}"
+            title = f"New post in r/{subreddit} by {post['author']} {humanize.naturaltime(time_diff)}"
+            body = f"Title: {post['title']}\nAuthor: {post['author']}\nTime: {post['time'].astimezone(pytz.timezone('America/New_York')).isoformat()}\nLink: {post['link']}"
 
             # Send notification
             send_pushbullet_notification(title, body)

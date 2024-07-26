@@ -138,8 +138,15 @@ def send_reddit_notifications(
             time_diff = datetime.now(pytz.utc) - post["time"]
 
             # Construct notification message
-            title = f"New post in r/{subreddit} by {post['author']} {humanize.naturaltime(time_diff)}"
-            body = f"Title: {post['title']}\nAuthor: {post['author']}\nTime: {post['time'].astimezone(pytz.timezone('America/New_York')).isoformat()}\nLink: {post['link']}"
+            title = (
+                f"New post in r/{subreddit} by {post['author']} {humanize.naturaltime(time_diff)}"
+            )
+            body = (
+                f"Title: {post['title']}\n"
+                f"Author: {post['author']}\n"
+                f"Time: {post['time'].astimezone(pytz.timezone('America/New_York')).isoformat()}\n"
+                f"Link: {post['link']}"
+            )
 
             # Send notification
             send_pushbullet_notification(title, body)

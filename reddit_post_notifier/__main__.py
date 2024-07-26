@@ -32,7 +32,7 @@ def download_reddit_search(
     session.cookies.set("over18", "1")
     session.mount("https://", a)
     try:
-        response = session.get(url, params=params, headers=headers)
+        response = session.get(url, params=params, headers=headers, timeout=5.0)
         response.raise_for_status()
         return BeautifulSoup(response.text, "html.parser")
     except requests.RequestException as e:

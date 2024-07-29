@@ -109,12 +109,8 @@ def send_pushbullet_notification(title, body):
     headers = {"Access-Token": api_key, "Content-Type": "application/json"}
     data = {"type": "note", "title": title, "body": body}
 
-    try:
-        response = requests.post(url, json=data, headers=headers)
-        response.raise_for_status()  # Raises an HTTPError for bad responses
-        print("Notification sent successfully!")
-    except requests.exceptions.RequestException as e:
-        print(f"Failed to send notification: {e}")
+    response = requests.post(url, json=data, headers=headers)
+    response.raise_for_status()  # Raises an HTTPError for bad responses
 
 
 def send_reddit_notifications(
@@ -130,10 +126,12 @@ def send_reddit_notifications(
     """
     # Fetch search results
     posts = fetch_and_parse_reddit_search(subreddit, search_query)
+    new_cnt = 0
     notified_cnt = 0
     # Check for new posts and send notifications
     for post in posts:
         if post["id"] not in notified_ids:
+            new_cnt += 1
             # Calculate time difference
             time_diff = datetime.now(pytz.utc) - post["time"]
 
@@ -149,14 +147,20 @@ def send_reddit_notifications(
             )
 
             # Send notification
-            send_pushbullet_notification(title, body)
-            notified_cnt += 1
 
-            # Add to notified set
-            notified_ids.add(post["id"])
+            try:
+                send_pushbullet_notification(title, body)
+                print("Notification sent successfully!")
+
+                notified_cnt += 1
+                # Add to notified set
+                notified_ids.add(post["id"])
+            except requests.exceptions.RequestException as e:
+                print(f"An error occurred while sending the notification: {e}")
+                print(f"Response body: {e.response.text}")
 
     print(
-        f"Checked for new posts. Total posts: {len(posts)}, new posts: {notified_cnt}"
+        f"Checked for new posts. Total posts: {len(posts)}, new posts: {new_cnt}, notified posts: {notified_cnt}"
     )
 
 
